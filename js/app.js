@@ -6,18 +6,17 @@
             let a = stage.first;
             let b = stage.wait;
             let c = stage.next;
-
             let mod = (tick - a) % (b + c);
+            ++progress;
+
             if (tick < a
                 || (tick - a < b + c && tick - a >= b)
                 || (tick - a >= b + c && mod >= b)
             ) {
-                ++progress
                 ontick(stage, tick, progress);
             } else {
                 onwait(stage, tick, progress);
             }
-
             ++tick;
             if (stage.time == progress) {
                 oncomplete(stage, tick, progress);
@@ -94,7 +93,8 @@
                     // console.log(stage.progress)
                 },
 
-                (stage, tick, progress) => {       
+                (stage, tick, progress) => {
+                    stage.progress.setAttribute("style", `width:${(progress / stage.time) * 100}%`);       
                     audio.setAttribute('src', 'sounds/shake.wav');
                     audio.play();
                 },
