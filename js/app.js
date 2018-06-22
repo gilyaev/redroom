@@ -72,6 +72,7 @@
         this.stages = options.stages;
         this.status = 0;
         this.element = options.element;
+        this.audio = options.audio;
 
         drawApp.call(this);
     }
@@ -81,20 +82,26 @@
 
         if (stage && status == 0) {
             this.status = 1;
+            let audio = document.createElement('audio');
             processStage(
                 stage,
 
                 // when tick 
                 (stage, tick, progress) => {
                     stage.progress.setAttribute("style", `width:${(progress / stage.time) * 100}%`);
+                    audio.setAttribute('src', 'sounds/tick.wav');
+                    audio.play();
                     // console.log(stage.progress)
                 },
 
-                (stage, tick, progress) => {
-
+                (stage, tick, progress) => {       
+                    audio.setAttribute('src', 'sounds/shake.wav');
+                    audio.play();
                 },
 
                 (stage, tick, progress) =>  {
+                    audio.setAttribute('src', 'sounds/complete.mp3');
+                    audio.play();
                     this.status = 0;
                 }
             );
